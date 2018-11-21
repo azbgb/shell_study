@@ -1,1 +1,48 @@
-#next命令
+#next命令  
+单行next命令  n
+sed '/mail/{n ; d}' data.txt   #删除含有mail行的下一行
+多行版本next命令  大写N
+sed '/mail/{N ; s/\n/ /}' data.txt  #合并含有mail的行以及它的下一行
+
+#多行删除命令 d D
+sed 'N ; /System\nAdministrator/d' data.txt  #System结尾和Administrator开头的两行都会删掉
+sed 'N ; /System\nAdministrator/D' data.txt  #System结尾和Administrator开头的两行 只会删除第一行
+sed '/^$/{N ; /line1/D}' data.txt  #删除第一行前的空白行
+
+#多行打印命令  p 大写P
+sed 'N ; /System\nAdministrator/p' data.txt  #System结尾和Administrator开头的两行都会打印出来
+sed 'N ; /System\nAdministrator/P' data.txt  #System结尾和Administrator开头的两行 只会打印第一行
+
+#保持空间
+模式空间是一块活跃的缓冲区， 保持空间来临时保存一些行
+h 将模式空间复制到保持空间
+H 将模式空间附加到保持空间
+g 将保持空间复制到模式空间
+G 将保持空间附加到模式空间
+x 交换模式空间和保持空间的内容
+sed '/mail/ {h; n; G; p}' data.txt   #交换含mail行以及它下一行的两行的顺序
+
+#排除命令 ！
+！让原本会起作用的命令不起作用
+sed -n '/mail/!p' data.txt   #打印不含mail的行
+sed -n '{1!G; h; $p}' data.txt  #反转data.txt的内容  
+
+#改变流  
+#分支 b
+sed '{2,3b ; s/ a / an /}' data.txt  #跳过2,3行执行替换命令
+定义分支标签 :label
+echo "This, is, a, test, to, remove, commas." | sed -n '{
+> :start
+> s/,//1p
+> /,/b start
+> }'    #实现循环功能  每次替换第一个逗号 如果还有匹配到逗号就跳转到start
+
+#测试 t
+测试命令会根据替换命令的结果跳转到某个标签，而不是根据地址进行跳转。
+echo "This, is, a, test, to, remove, commas." | sed -n '{
+> :start
+> s/,//1p
+> t start
+> }'   #和分支相比 就不要判断是否还有匹配到逗号
+
+
