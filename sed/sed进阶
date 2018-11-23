@@ -45,4 +45,9 @@ echo "This, is, a, test, to, remove, commas." | sed -n '{
 > t start
 > }'   #和分支相比 就不要判断是否还有匹配到逗号
 
+#替换模式
+#   &符号
+echo "The cat sleeps in his hat." | sed 's/.at/"&"/g'  #给匹配到的文本添加引号""
+#   用圆括号()来定义替换模式中的子模式  \1 替代字符由反斜线和数字组成
+echo "This is a test line." | sed 's/\(a\) test/\1 real/'  #替换成子 模式1 + real
 
