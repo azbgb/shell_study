@@ -1,1 +1,8 @@
-#
+#内建变量
+FIELDWIDTHS 由空格分隔的一列数字，定义了每个数据字段确切宽度
+FS 输入字段分隔符
+RS 输入记录分隔符
+OFS 输出字段分隔符
+ORS 输出记录分隔符
+awk 'BEGIN{FS=",";RS=";";OFS="\t"} {print $1,$2,$3,$4}' data1.txt
+
